@@ -1,67 +1,55 @@
 {
-    "messages":[
-        "id": "1",
+  "messages": [
+    {
+      "id": "1",
+      "titre": "titre 1",
+      "message": "un message de test",
+      "date": "12-10-2022",
+      "commentaires": [
+        { "id": "1", "commentaire": "blabla" },
+        { "id": "2", "commentaire": "blabla" },
+        { "id": "3", "commentaire": "blabla" }
+      ]
+    },
+     {
+       "id": "2",
+       "titre": "titre 1",
+       "message": "un message de test",
+       "date": "12-11-2022",
+       "commentaires": [
+         { "id": "1", "commentaire": "blabla" },
+         { "id": "2", "commentaire": "blabla" },
+         { "id": "3", "commentaire": "blabla" }
+       ]
+     },
+      {
+        "id": "3",
         "titre": "titre 1",
         "message": "un message de test",
-        "creation_date": "12-10-2022",
-        "commentaire": [
-            {    "id": "1"
-                "commentaire": "blabla"
-            },
-              {    "id": "2"
-                "commentaire": "blabla"
-            },
-              {    "id": "3"
-                "commentaire": "blabla"
-            }
-        ]
-    ]
-},
-{
-    "messages":[
-        "id": "2",
-        "titre": "titre 2",
-        "message": "un message de test",
-        "creation_date": "12-10-2022"
-    ]
-},
-{
-    "messages":[
-        "id": "3",
-        "titre": "titre 3",
-        "message": "un message de test",
-        "creation_date": "12-10-2022"
-    ]
-},
-{
-    "messages":[
-        "id": "4",
-        "titre": "titre 4",
-        "message": "un message de test",
-        "creation_date": "12-10-2022"
-    ]
-},
-{
-    "messages":[
-        "id": "5",
-        "titre": "titre 5",
-        "message": "un message de test",
-        "creation_date": "12-10-2022"
-    ]
-},
-{
-    "messages":[
-        "id": "6",
-        "titre": "titre 6",
-        "message": "un message de test",
-        "creation_date": "12-10-2022"
-    ]
-},
-{
-    "messages":[
-        "id": "7",
-        "titre": "titre 7",
-        "message": "un message de test",
-        "creation_date": "12-10-2022"
-    ]
+        "date": "12-14-2022",
+        "commentaires": []
+      },
+       {
+         "id": "4",
+         "titre": "titre 1",
+         "message": "un message de test",
+         "date": "12-16-2022",
+         "commentaires": [
+           { "id": "1", "commentaire": "blabla" },
+           { "id": "2", "commentaire": "blabla" },
+           { "id": "3", "commentaire": "blabla" }
+         ]
+       },
+        {
+          "id": "5",
+          "titre": "titre 1",
+          "message": "un message de test",
+          "date": "12-20-2022",
+          "commentaires": [
+            { "id": "1", "commentaire": "blabla" },
+            { "id": "2", "commentaire": "blabla" },
+            { "id": "3", "commentaire": "blabla" }
+          ]
+        }
+  ]
 }

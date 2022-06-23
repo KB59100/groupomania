@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import messages from '../data/messages';
 
+
 const app = express();
 
 // Apply middlware for CORS and JSON endpoing
@@ -67,6 +68,20 @@ app.delete('/messages/:id', (req, res) => {
     })
     res.status(200).json(messages);
 })
+
+app.post('/messages/:id/commentaires', (req, res) => {
+   const messageId = req.params.id;
+   const localMessage = [];
+
+   messages.messages.forEach((message) => {
+    if(message.id === messageId) {
+      message.commentaires.push(req.body);
+      localMessage.push(message);
+    } 
+   })
+
+    res.status(200).json(localMessage);
+});
 
 
 app.listen(process.env.PORT, () =>
