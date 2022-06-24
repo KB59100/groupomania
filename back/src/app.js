@@ -2,14 +2,41 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import messages from '../data/messages';
+import usersData from '../data/users';
 
-
+ 
 const app = express();
 
 // Apply middlware for CORS and JSON endpoing
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+app.get("/users", (req, res) => {
+  const userId = req.params.userId;
+
+  usersData.users.forEach((userId) => {
+    if (userId.id === userId) {
+      userId.push(userId);
+    }
+  });
+    res.status(200).json(userId);
+  }
+);
+
+ 
+app.delete("/users", (req, res) => {
+  const userId = req.params.userId;
+
+  usersData.users.forEach((userId, index) => {
+    if (userId.id === userId) {
+      usersData.userId.splice(index, 1);
+    }
+  });
+  res.status(200).json(userId);
+});
+
 
 app.get('/messages', (req, res) => {
   if(messages.messages.lenght === 0) {
@@ -79,8 +106,18 @@ app.post('/messages/:id/commentaires', (req, res) => {
       localMessage.push(message);
     } 
    })
-
     res.status(200).json(localMessage);
+})
+
+app.delete("/messages/:id/commentaires", (req, res) => {
+  const id = req.params.id;
+
+  messages.messages.forEach((commentaires, index) => {
+    if (commentaires.id === id) {
+      commentaires.messages.splice(index, 1);
+    }
+  });
+  res.status(200).json(messages);
 });
 
 

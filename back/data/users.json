@@ -1,0 +1,28 @@
+{
+    "users": [
+        {
+            "userId": "1",
+            "userName": "toto",
+            "email": "toto@gmail.com",
+            "password": "totoPassword"
+        },
+        {
+          "userId": "2",
+          "userName": "tata",
+          "email": "tata@gmail.com",
+          "password": "tataPassword"
+        },
+        {
+          "userId": "3",
+          "userName": "mama",
+          "email": "mama@gmail.com",
+          "password": "mamaPassword"
+        },
+        {
+          "userId": "4",
+          "userName": "momo",
+          "email": "momo@gmail.com",
+          "password": "momoPassword"
+        }
+    ]
+}
