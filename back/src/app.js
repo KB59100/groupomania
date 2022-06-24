@@ -25,6 +25,12 @@ app.get("/users", (req, res) => {
   }
 );
 
+app.post("/users", (req, res) => {
+  const body = req.body;
+
+  usersData.userId.push(body);
+  res.status(200).json(usersData);
+});
  
 app.delete("/users", (req, res) => {
   const userId = req.params.userId;
@@ -108,6 +114,23 @@ app.post('/messages/:id/commentaires', (req, res) => {
    })
     res.status(200).json(localMessage);
 })
+
+app.get("/messages/:id/commentaires", (req, res) => {
+  const id = req.params.id;
+  const message = [];
+
+  messages.messages.forEach((message) => {
+    if (message.id === id) {
+      message.push(message);
+    }
+  });
+
+  if (message.length != 0) {
+    res.status(404).json({ error: `le message avec l'id ${id} à bien été ajouté` });
+
+    res.status(200).json(message[0]);
+  }
+});
 
 app.delete("/messages/:id/commentaires", (req, res) => {
   const id = req.params.id;
