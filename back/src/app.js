@@ -207,18 +207,20 @@ app.put("/messages/:id/commentaires", (req, res) => {
 //Récupère tous les commentaires d'un msg
 app.get("/messages/:id/commentaires", (req, res) => {
   const id = req.params.id;
-  const body = req.body;
   const localCom = [];
-  const localMessage = [];
-  if(messages.commentaires.lenght > 0) {
-     {
-       messages.commentaires.push(body);
-       localMessage.push(messages);
-       localCom.push(messages);
-     } 
+
+  messages.messages.forEach((message) => {
+    if (message.id === id) {
+      localCom.push(message);
+    }
+  });
+
+  if (localCom.length === 0) {
+    res.status(404).json({ error: `pas de commentaires` });
   }
-  
-})
+    res.status(200).json(localCom);
+});
+
 
 //Supprime un commentaire d'un msg
 app.delete("/messages/:id/commentaires", (req, res) => {
