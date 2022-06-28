@@ -114,7 +114,7 @@ app.get("/messages/:id", (req, res) => {
   res.status(200).json(localMessage[0]);
 });
 
-//edite un msg
+//création du msg
 app.post('/messages', (req, res) => {
   const body = req.body;
 
@@ -126,7 +126,7 @@ app.post('/messages', (req, res) => {
   }
 });
 
-//création du msg
+//edite un msg
 app.put('/messages/:id', (req, res) => {
   const id = req.params.id;
   const body = req.body;
@@ -166,46 +166,58 @@ app.delete('/messages/:id', (req, res) => {
 
 
 
-//création d'un commentaire associé a un msg
-app.put('/messages/:id/commentaires', (req, res) => {
-  const messageId = req.params.id;
-  const body = req.body;
-  const localCom = [];
-
-  try{
-    messages.messages.forEach((message) => {
-      if (message.id === messageId) {
-        message.commentaires = body.commentaires;
-        localCom.push(message);
-      }
-    })
-    res.status(200).json(localCom);
-    } catch (e) {
-      res.status(500); 
-    }
-})
-
-//Edite met a jour un commentaire
+//Création d'un commentaire associé a un msg
 app.post('/messages/:id/commentaires', (req, res) => {
    const messageId = req.params.id;
    const localMessage = [];
+   const localCom = [];
 
    messages.messages.forEach((message) => {
     if(message.id === messageId) {
       message.commentaires.push(req.body);
       localMessage.push(message);
+      localCom.push(message);
     } 
    })
-    res.status(200).json(localMessage);
+    res.status(200).json(localMessage); 
 })
+
+//Mise a jour d'un commentaire
+app.put("/messages/:id/commentaires", (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+   const localMessage = [];
+  const localCom = [];
+
+  try {
+    messages.messages.forEach((message) => {
+      if (message.id === id) {
+        message.commentaires = body.message;
+        localCom.push(message);
+        localMessage.push(message);
+      }
+    });
+    res.status(200).json(localMessage);
+  } catch (e) {
+    res.status(500);
+  } 
+})
+
 
 //Récupère tous les commentaires d'un msg
 app.get("/messages/:id/commentaires", (req, res) => {
   const id = req.params.id;
   const body = req.body;
   const localCom = [];
-
-
+  const localMessage = [];
+  if(messages.commentaires.lenght > 0) {
+     {
+       messages.commentaires.push(body);
+       localMessage.push(messages);
+       localCom.push(messages);
+     } 
+  }
+  
 })
 
 //Supprime un commentaire d'un msg
