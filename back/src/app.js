@@ -36,13 +36,17 @@ app.get('/users', (req, res) => {
 //Récupère un user
 app.get("/users/:id", (req, res) => {
   const id = req.params.id;
-
-  usersData.users.forEach((user) => {
-    if (user.id === id) {
-      usersData.users.push(user);
-    }
-  });
-  res.status(200).json(usersData.users);
+ 
+  try {
+    usersData.users.forEach((user) => {
+      if (user.id === id) {
+        usersData.users.push(user);
+      }
+    });
+    res.status(200).json(usersData.users);
+  } catch (e) {
+    res.status(500);
+  }
 });
 
 //Mise a jour d'un user
@@ -68,12 +72,16 @@ app.put('/users/:id', (req, res) => {
 app.delete("/users/:id", (req, res) => {
   const userId = req.params.id;
 
+  try{
   usersData.users.forEach((user, index) => {
     if (user.id === userId) {
       usersData.users.splice(index, 1);
     }
   });
   res.status(200).json(usersData.users);
+ } catch (e) {
+     res.status(500);
+   }
 });
 
 
@@ -128,7 +136,7 @@ app.put('/messages/:id', (req, res) => {
     messages.messages.forEach((message) => {
       if (message.id === id) {
         message.titre = body.titre;
-        message.message = body.message;
+        message.messages = body.message;
         localMessage.push(message);
       }
     })
@@ -173,7 +181,7 @@ app.put('/messages/:id/commentaires', (req, res) => {
     })
     res.status(200).json(localCom);
     } catch (e) {
-      res.status(500);
+      res.status(500); 
     }
 })
 
@@ -193,11 +201,12 @@ app.post('/messages/:id/commentaires', (req, res) => {
 
 //Récupère tous les commentaires d'un msg
 app.get("/messages/:id/commentaires", (req, res) => {
-  if (messages.messages.lenght === 0) {
-    res.status(404).json({ error: "pas de commentaires!" });
-  }
-  res.status(200).json(messages);
-});
+  const id = req.params.id;
+  const body = req.body;
+  const localCom = [];
+
+
+})
 
 //Supprime un commentaire d'un msg
 app.delete("/messages/:id/commentaires", (req, res) => {
