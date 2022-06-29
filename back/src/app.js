@@ -170,27 +170,27 @@ app.delete('/messages/:id', (req, res) => {
 app.post('/messages/:id/commentaires', (req, res) => {
    const messageId = req.params.id;
    const localMessage = [];
-   const localCom = [];
+  
 
    messages.messages.forEach((message) => {
     if(message.id === messageId) {
       message.commentaires.push(req.body);
       localMessage.push(message);
-      localCom.push(message);
     } 
    })
     res.status(200).json(localMessage); 
 })
 
 //Mise a jour d'un commentaire
-app.put("/messages/:id/commentaires", (req, res) => {
+app.put('/messages/:id/commentaires/:id', (req, res) => {
   const id = req.params.id;
   const body = req.body;
-   const localMessage = [];
+  const localMessage = [];
   const localCom = [];
+  
 
   try {
-    messages.messages.forEach((message) => {
+    messages.commentaires.forEach((message) => {
       if (message.id === id) {
         message.commentaires = body.message;
         localCom.push(message);
@@ -198,14 +198,14 @@ app.put("/messages/:id/commentaires", (req, res) => {
       }
     });
     res.status(200).json(localMessage);
-  } catch (e) {
+  } catch (e) { 
     res.status(500);
   } 
 })
 
 
 //Récupère tous les commentaires d'un msg
-app.get("/messages/:id/commentaires", (req, res) => {
+app.get('/messages/:id/commentaires', (req, res) => {
   const id = req.params.id;
   const localCom = [];
 
@@ -223,17 +223,21 @@ app.get("/messages/:id/commentaires", (req, res) => {
 
 
 //Supprime un commentaire d'un msg
-app.delete("/messages/:id/commentaires", (req, res) => {
+app.delete('/messages/:id/commentaires/:id', (req, res) => {
   const id = req.params.id;
+  const localMessage = [];
 
-  messages.messages.forEach((commentaires, index) => {
-    if (commentaires.id === id) {
-      commentaires.messages.splice(index, 1);
-    }
-  });
-  res.status(200).json(messages);
+  try {
+    messages.commentaires.forEach((messages, index) => {
+      if (messages.id === id) {
+        messages.commentaires.splice(index, 1);
+      }
+    });
+    res.status(200).json(localMessage);
+  } catch (e) {
+    res.status(500);
+  }
 });
-
 
 
 
