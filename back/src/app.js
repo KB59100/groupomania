@@ -1,10 +1,9 @@
-import express from 'express';
-import cors from 'cors';
-import 'dotenv/config';
-import messages from '../data/messages';
-import usersData from '../data/users';
+const express =require("express");
+const cors=require("cors");
+require("dotenv").config();
+const messages=require ("../data/messages.json");
+const usersData =require("../data/users.json");
 
- 
 const app = express();
 
 // Apply middlware for CORS and JSON endpoing
@@ -12,31 +11,26 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
-
-
 //Création du user
-app.post('/users', (req, res) => {
-   try {
-     const body = req.body;
-     usersData.users.push(body);
-     res.status(200).json(usersData);
-   } catch (e) {
-     res.status(500);
-   }
+app.post("/users", (req, res) => {
+  try {
+    const body = req.body;
+    usersData.users.push(body);
+    res.status(200).json(usersData);
+  } catch (e) {
+    res.status(500);
+  }
 });
 
 //Récupère tous les users
-app.get('/users', (req, res) => {
-    res.status(200).json(usersData.users);
-  }
-);
+app.get("/users", (req, res) => {
+  res.status(200).json(usersData.users);
+});
 
 //Récupère un user
 app.get("/users/:id", (req, res) => {
   const id = req.params.id;
- 
+
   try {
     usersData.users.forEach((user) => {
       if (user.id === id) {
@@ -50,162 +44,155 @@ app.get("/users/:id", (req, res) => {
 });
 
 //Mise a jour d'un user
-app.put('/users/:id', (req, res) => {
+app.put("/users/:id", (req, res) => {
   const body = req.body;
   const id = req.params.id;
 
-  try{
-  usersData.users.forEach((user) => {
-    if (user.id === id) {
-      user.userName = body.userName;
-      user.email = body.email;
-    }
-  })
-  res.status(200).json(usersData);
+  try {
+    usersData.users.forEach((user) => {
+      if (user.id === id) {
+        user.userName = body.userName;
+        user.email = body.email;
+      }
+    });
+    res.status(200).json(usersData);
   } catch (e) {
     res.status(500);
   }
+});
 
-})
- 
 //Supprimer un user
 app.delete("/users/:id", (req, res) => {
   const userId = req.params.id;
 
-  try{
-  usersData.users.forEach((user, index) => {
-    if (user.id === userId) {
-      usersData.users.splice(index, 1);
-    }
-  });
-  res.status(200).json(usersData.users);
- } catch (e) {
-     res.status(500);
-   }
+  try {
+    usersData.users.forEach((user, index) => {
+      if (user.id === userId) {
+        usersData.users.splice(index, 1);
+      }
+    });
+    res.status(200).json(usersData.users);
+  } catch (e) {
+    res.status(500);
+  }
 });
 
-
-
-
-
 //Récupère tous les msg
-app.get('/messages', (req, res) => {
-  if(messages.messages.lenght === 0) {
-    res.status(404).json({error: "pas de messages"})
+app.get("/messages", (req, res) => {
+  if (messages.messages.length === 0) {
+    res.status(404).json({ error: "pas de messages" });
   }
   res.status(200).json(messages);
 });
 
 //Récupère un message
 app.get("/messages/:id", (req, res) => {
-
   const id = req.params.id;
   const localMessage = [];
 
   messages.messages.forEach((message) => {
-    if(message.id === id) {
+    if (message.id === id) {
       localMessage.push(message);
     }
-  })
+  });
 
-  if(localMessage.length === 0) {
-    res.status(404).json({error: `le message avec l'id ${id} n'existe pas`});
+  if (localMessage.length === 0) {
+    res.status(404).json({ error: `le message avec l'id ${id} n'existe pas` });
   }
   res.status(200).json(localMessage[0]);
 });
 
 //création du msg
-app.post('/messages', (req, res) => {
+app.post("/messages", (req, res) => {
   const body = req.body;
 
-  try{
-  messages.messages.push(body);
-  res.status(200).json(messages);
+  try {
+    messages.messages.push(body);
+    res.status(200).json(messages);
   } catch (e) {
     res.status(500);
   }
 });
 
 //edite un msg
-app.put('/messages/:id', (req, res) => {
+app.put("/messages/:id", (req, res) => {
   const id = req.params.id;
   const body = req.body;
   const localMessage = [];
 
-  try{
+  try {
     messages.messages.forEach((message) => {
       if (message.id === id) {
         message.titre = body.titre;
-        message.messages = body.message;
+        message.message = body.message;
         localMessage.push(message);
       }
-    })
+    });
     res.status(200).json(localMessage);
-    } catch (e) {
-      res.status(500);
-    }
-})
+  } catch (e) {
+    res.status(500);
+  }
+});
 
 //Supprimer un msg
-app.delete('/messages/:id', (req, res) => {
+app.delete("/messages/:id", (req, res) => {
   const id = req.params.id;
-      
-  try{
-      messages.messages.forEach((message, index) => {
+
+  try {
+    messages.messages.forEach((message, index) => {
       if (message.id === id) {
-        messages.messages.splice(index, 1)
+        messages.messages.splice(index, 1);
       }
-    })
+    });
     res.status(200).json(messages);
-    } catch (e) {
-      res.status(500);
-    }
-
-})
-
-
-
+  } catch (e) {
+    res.status(500);
+  }
+});
 
 //Création d'un commentaire associé a un msg
-app.post('/messages/:id/commentaires', (req, res) => {
-   const messageId = req.params.id;
-   const localMessage = [];
-  
+app.post("/messages/:id/commentaires", (req, res) => {
+  const messageId = req.params.id;
+  const localMessage = [];
 
-   messages.messages.forEach((message) => {
-    if(message.id === messageId) {
+  messages.messages.forEach((message) => {
+    if (message.id === messageId) {
       message.commentaires.push(req.body);
       localMessage.push(message);
-    } 
-   })
-    res.status(200).json(localMessage); 
-})
+    }
+  });
+  res.status(200).json(localMessage);
+});
 
 //Mise a jour d'un commentaire
-app.put('/messages/:id/commentaires/:id', (req, res) => {
-  const id = req.params.id;
+app.put("/messages/:messagesid/commentaires/:commentairesid", (req, res) => {
+  const id = req.params.messagesid;
+  const id1 = req.params.commentairesid;
   const body = req.body;
   const localMessage = [];
   const localCom = [];
-  
-
+  const message =messages.messages.find((m)=>{
+    return m.id ===id
+  })
+if (!message){
+  return res.status(404).send()
+}
   try {
-    messages.commentaires.forEach((message) => {
-      if (message.id === id) {
-        message.commentaires = body.message;
+    message.commentaires.forEach((message) => {
+      if (message.id === id1) {
+        message.commentaire = body.message;
         localCom.push(message);
         localMessage.push(message);
       }
     });
     res.status(200).json(localMessage);
-  } catch (e) { 
+  } catch (e) {
     res.status(500);
-  } 
-})
-
+  }
+});
 
 //Récupère tous les commentaires d'un msg
-app.get('/messages/:id/commentaires', (req, res) => {
+app.get("/messages/:id/commentaires", (req, res) => {
   const id = req.params.id;
   const localCom = [];
 
@@ -218,30 +205,33 @@ app.get('/messages/:id/commentaires', (req, res) => {
   if (localCom.length === 0) {
     res.status(404).json({ error: `pas de commentaires` });
   }
-    res.status(200).json(localCom);
+  res.status(200).json(localCom);
 });
-
 
 //Supprime un commentaire d'un msg
-app.delete('/messages/:id/commentaires/:id', (req, res) => {
-  const id = req.params.id;
-  const localMessage = [];
+app.delete("/messages/:messageId/commentaires/:commentaireId", (req, res) => {
+  const { commentaireId, messageId } = req.params;
 
   try {
-    messages.commentaires.forEach((messages, index) => {
-      if (messages.id === id) {
-        messages.commentaires.splice(index, 1);
-      }
-    });
-    res.status(200).json(localMessage);
+   const newMessages = messages.map((message) => {
+    return message.id === messageId ?
+    {
+      commentaires: message.commentaires.filter(commentaire => commentaire.id !== commentaireId),
+      id: messageId
+    }
+    :
+    message
+   })
+    res.status(200).json(newMessages);
   } catch (e) {
-    res.status(500);
+    console.log(e)
+    res.status(500).send();// permet d'envoyer une réponse avec le statut 500
   }
-});
+})
 
 
 
 
 app.listen(process.env.PORT, () =>
-  console.log('Example app listening on port 3000!'),
+  console.log("Example app listening on port 3000!")
 );
