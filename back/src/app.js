@@ -1,8 +1,9 @@
+require("dotenv").config();
 const express =require("express");
 const cors=require("cors");
-require("dotenv").config();
-const messages=require ("../data/messages.json");
-const usersData =require("../data/users.json");
+// const messages=require ("../data/messages.json");
+// const usersData =require("../data/users.json");
+
 
 const app = express();
 
@@ -10,6 +11,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+ 
 
 //Création du user
 app.post("/users", (req, res) => {
@@ -76,6 +79,9 @@ app.delete("/users/:id", (req, res) => {
     res.status(500);
   }
 });
+
+
+
 
 //Récupère tous les msg
 app.get("/messages", (req, res) => {
@@ -149,6 +155,10 @@ app.delete("/messages/:id", (req, res) => {
     res.status(500);
   }
 });
+
+
+
+
 
 //Création d'un commentaire associé a un msg
 app.post("/messages/:id/commentaires", (req, res) => {
