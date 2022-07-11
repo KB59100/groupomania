@@ -19,14 +19,31 @@ createTable("user", table);
  *
  * @return  {void}            [return description]
  */
-function addUser(user) {
+function add(user) {
   db.prepare(
     /*sql*/ `INSERT INTO user (user_name, email, password) VALUES (@userName, @email, @password)`
   ).run(user);
 }
 
-//addUser({ userName: "Momo", email: "momo@gmail.com", password: "1234" });
+/**
+ * [getByEmail description]
+ *
+ * @param   {String}  email  [email description]
+ *
+ * @return  {Object}         [return description]
+ */
+function getByEmail(email) {
+  return db
+    .prepare(/*sql*/ `SELECT * FROM user WHERE email=@email`)
+    .get({ email });
+}
+
+function deleteUser(email) {
+  return db.prepare(`DELETE FROM user WHERE email=@email`).get({ email });
+}
 
 module.exports = {
-    addUser
-}
+  add,
+  getByEmail,
+  deleteUser,
+};

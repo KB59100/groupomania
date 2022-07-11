@@ -1,9 +1,9 @@
 require("dotenv").config();
-const express =require("express");
-const cors=require("cors");
-// const messages=require ("../data/messages.json");
-// const usersData =require("../data/users.json");
-
+const express = require("express");
+const cors = require("cors");
+const messages = require("../data/messages.json");
+const usersData = require("../data/users.json");
+const { addUser, login, deleteUser } = require("../controllers/userCtrl");
 
 const app = express();
 
@@ -12,23 +12,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
- 
-
 //Création du user
-app.post("/users", (req, res) => {
-  try {
-    const body = req.body;
-    usersData.users.push(body);
-    res.status(200).json(usersData);
-  } catch (e) {
-    res.status(500);
-  }
-});
-
-//Récupère tous les users
-app.get("/users", (req, res) => {
-  res.status(200).json(usersData.users);
-});
+app.post("/users", addUser);
+app.post("/login", login);
+//Supprimer un user
+app.delete("/users/:id", deleteUser);
 
 //Récupère un user
 app.get("/users/:id", (req, res) => {
@@ -63,23 +51,6 @@ app.put("/users/:id", (req, res) => {
     res.status(500);
   }
 });
-
-//Supprimer un user
-app.delete("/users/:id", (req, res) => {
-  const userId = req.params.id;
-
-  try {
-    usersData.users.forEach((user, index) => {
-      if (user.id === userId) {
-        usersData.users.splice(index, 1);
-      }
-    });
-    res.status(200).json(usersData.users);
-  } catch (e) {
-    res.status(500);
-  }
-});
-
 
 
 
@@ -156,10 +127,6 @@ app.delete("/messages/:id", (req, res) => {
   }
 });
 
-
-
-
-
 //Création d'un commentaire associé a un msg
 app.post("/messages/:id/commentaires", (req, res) => {
   const messageId = req.params.id;
@@ -179,26 +146,19 @@ app.put("/messages/:messagesid/commentaires/:commentairesid", (req, res) => {
   const id = req.params.messagesid;
   const id1 = req.params.commentairesid;
   const body = req.body;
-  const localMessage = [];
-  const localCom = [];
-  const message =messages.messages.find((m)=>{
-    return m.id ===id
-  })
-if (!message){
-  return res.status(404).send()
-}
-  try {
-    message.commentaires.forEach((message) => {
-      if (message.id === id1) {
-        message.commentaire = body.message;
-        localCom.push(message);
-        localMessage.push(message);
-      }
-    });
-    res.status(200).json(localMessage);
-  } catch (e) {
-    res.status(500);
+  const message = messages.messages.find((m) => {
+    return m.id === id;
+  });
+  if (!message) {
+    return res.status(404).send();
   }
+
+  message.commentaires.forEach((message) => {
+    if (message.id === id1) {
+      message.commentaire = body.message;
+    }
+  });
+  res.status(200).json(messages);
 });
 
 //Récupère tous les commentaires d'un msg
@@ -223,24 +183,22 @@ app.delete("/messages/:messageId/commentaires/:commentaireId", (req, res) => {
   const { commentaireId, messageId } = req.params;
 
   try {
-   const newMessages = messages.map((message) => {
-    return message.id === messageId ?
-    {
-      commentaires: message.commentaires.filter(commentaire => commentaire.id !== commentaireId),
-      id: messageId
-    }
-    :
-    message
-   })
+    const newMessages = messages.messages.map((message) => {
+      return message.id === messageId
+        ? {
+            commentaires: message.commentaires.filter(
+              (commentaire) => commentaire.id !== commentaireId
+            ),
+            id: messageId,
+          }
+        : message;
+    });
     res.status(200).json(newMessages);
   } catch (e) {
-    console.log(e)
-    res.status(500).send();// permet d'envoyer une réponse avec le statut 500
+    console.log(e);
+    res.status(500).send(); // permet d'envoyer une réponse avec le statut 500
   }
-})
-
-
-
+});
 
 app.listen(process.env.PORT, () =>
   console.log("Example app listening on port 3000!")
