@@ -1,6 +1,7 @@
 const model = require("../models/modelUsers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {isAllowed} = require("../services/auth");
 
 async function addUser(req, res) {
   const user = req.body;
@@ -41,15 +42,15 @@ async function login(req, res) {
   }
 }
 
-async function deleteUser(req, res) {
-  const { email } = req.body;
+function deleteUser(req, res) {
+  const id = req.params.id;
+  isAllowed(req.authorizedUser, id);
   try {
-    await model.deleteUser(email)
-    return res.status(200).send();
+    model.deleteUser(id);
+    return res.status(200).json({ message: "utilisateur supprimé" });
   } catch (err) {
-    return res.status(500).send();
+    return res.status(500).json({ error: err });
   }
-
 }
 
 module.exports = {

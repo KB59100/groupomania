@@ -1,10 +1,17 @@
 const { createTable, db } = require("../services/database");
 
+/**
+ * roles
+ * 0 : utilisateur
+ * 1 : admin
+ */
+
 const table = /*sql*/ `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_name TEXT NOT NULL,
     email TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    role INTEGER NOT NULL DEFAULT 0
 `;
 
 createTable("user", table);
@@ -38,12 +45,17 @@ function getByEmail(email) {
     .get({ email });
 }
 
-function deleteUser(email) {
-  return db.prepare(`DELETE FROM user WHERE email=@email`).get({ email });
+function deleteUser(id) {
+  return db.prepare(`DELETE FROM "user" WHERE id=@id`).run({ id });
+}
+
+function getRoleById(id) {
+  return db.prepare(/*sql*/ `SELECT role FROM "user" WHERE id=@id`).get({ id });
 }
 
 module.exports = {
   add,
   getByEmail,
+  getRoleById,
   deleteUser,
 };

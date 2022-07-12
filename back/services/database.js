@@ -11,7 +11,20 @@ function createTable(name, structure) {
   }
 }
 
+function updateById(table, data){
+  let values = "";
+  for (const key of Object.keys(data)) {
+    if (key === "id") continue;
+    if (values.length > 0) values+= ","
+    values += ` ${key}=@${key}`;
+  }
+  db
+    .prepare(/*sql*/ `UPDATE ${table} SET ${values} WHERE id=@id`)
+    .run(data)
+}
+
 module.exports = {
   createTable,
   db,
+  updateById
 };

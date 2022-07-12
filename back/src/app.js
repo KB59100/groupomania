@@ -1,9 +1,10 @@
 require("dotenv").config();
 const express = require("express");
+const userRoutes = require("../routes/userRtes");
 const cors = require("cors");
 const messages = require("../data/messages.json");
-const usersData = require("../data/users.json");
-const { addUser, login, deleteUser } = require("../controllers/userCtrl");
+// const usersData = require("../data/users.json");
+
 
 const app = express();
 
@@ -12,46 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Création du user
-app.post("/users", addUser);
-app.post("/login", login);
-//Supprimer un user
-app.delete("/users/:id", deleteUser);
-
-//Récupère un user
-app.get("/users/:id", (req, res) => {
-  const id = req.params.id;
-
-  try {
-    usersData.users.forEach((user) => {
-      if (user.id === id) {
-        usersData.users.push(user);
-      }
-    });
-    res.status(200).json(usersData.users);
-  } catch (e) {
-    res.status(500);
-  }
-});
-
-//Mise a jour d'un user
-app.put("/users/:id", (req, res) => {
-  const body = req.body;
-  const id = req.params.id;
-
-  try {
-    usersData.users.forEach((user) => {
-      if (user.id === id) {
-        user.userName = body.userName;
-        user.email = body.email;
-      }
-    });
-    res.status(200).json(usersData);
-  } catch (e) {
-    res.status(500);
-  }
-});
-
+app.use("/api/users", userRoutes);
 
 
 //Récupère tous les msg
