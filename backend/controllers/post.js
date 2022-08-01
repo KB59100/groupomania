@@ -97,7 +97,7 @@ exports.getAllPosts = (req, res, next) => {
         if(posts) {
             res.status(200).json(posts);
         } else {
-            res.status(404).json({ message: 'Error geting posts' });
+            res.status(400).json({ message: 'Error geting posts' });
         }
     })
     .catch(error => {
@@ -206,7 +206,7 @@ exports.getMyPosts = (req, res, next) => {
         if(posts) {
             res.status(200).json(posts);
         } else {
-            res.status(404).json({ message: 'Error retrieving posts' });
+            res.status(400).json({ message: 'Error retrieving posts' });
         }
     })
     .catch(error => {
@@ -232,7 +232,7 @@ exports.deletePost = (req, res, next) => {
        // Check the existence of the post
 
         if (post === null) {
-            return res.status(404).json({
+            return res.status(400).json({
                 message: 'post not found !'
             });
         }
@@ -289,7 +289,7 @@ exports.deletePost = (req, res, next) => {
         
     })
     .catch(error => {
-        res.status(404).json({
+        res.status(500).json({
             message: error.message,
             error
         });
@@ -326,7 +326,7 @@ exports.updatePost = (req, res, next) => {
         // Check the existence of the post
 
         if (post === null) {
-            return res.status(404).json({
+            return res.status(400).json({
                 message: 'post not found !'
             });
         }
@@ -408,7 +408,7 @@ exports.updatePost = (req, res, next) => {
         
     })
     .catch(error => {
-        res.status(404).json({
+        res.status(500).json({
             message: error.message,
             error
         });

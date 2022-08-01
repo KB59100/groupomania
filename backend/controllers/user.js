@@ -194,7 +194,7 @@ exports.getUser = (req, res, next) => {
             res.status(200).json(userData);
         })
         .catch(error => {
-            res.status(404).json({
+            res.status(500).json({
                 message: error.message
             });
         });
@@ -282,7 +282,7 @@ exports.updatePwdUser = (req, res, next) => {
 
         })
         .catch(error => {
-            res.status(404).json({
+            res.status(500).json({
                 message: error.message
             });
         });
@@ -343,7 +343,7 @@ exports.deleteUser = (req, res, next) => {
 
         })
         .catch(error => {
-            res.status(400).json({
+            res.status(500).json({
                 message: error.message
             });
         });
@@ -472,7 +472,7 @@ exports.updateUser = (req, res, next) => {
 
         })
         .catch(error => {
-            res.status(404).json({
+            res.status(500).json({
                 message: error.message
             });
         });

@@ -13,21 +13,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.Like.belongsTo(models.User, {
         foreignKey: {
-          allowNull: false, name: 'userId'
+          allowNull: false,
+          foreignKey: "userId",
+          targetKey: "id"
         },
-        onDelete: 'CASCADE'
+        // onDelete: 'CASCADE'
       });
       models.Like.belongsTo(models.Post, {
         foreignKey: {
-          allowNull: false, name: 'postId'
+          allowNull: false,
+          foreignKey: "postId",
+          targetKey: "id"
         },
-        onDelete: 'CASCADE'
+        // onDelete: 'CASCADE'
       });
     }
   }
   Like.init({
-    userId: DataTypes.INTEGER,
-    postId: DataTypes.INTEGER
+    // userId: DataTypes.INTEGER,
+    // postId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Like',
