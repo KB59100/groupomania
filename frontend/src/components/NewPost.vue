@@ -18,8 +18,8 @@
         <div class="d-flex justify-content-end mb-2 card-btns">
           <label for="newPostImage" class="form-label image-label d-flex"><i class="fas fa-image image-icon"></i>Image</label>
           <input v-if="!previewImage" type="file" id="newPostImage" ref="newPostImage" class="form-control btn-upload" @change="onFileSelected" @click="resetErrorMessage">
-          <button v-else @click="removeImage" class="btn btn-remove">Remove picture</button>
-          <button :disabled="!valid" type="submit" class="btn btn-groupo btn-publish">Publish</button>
+          <button v-else @click="removeImage" class="btn btn-remove">Supprimer l'image</button>
+          <button :disabled="!valid" type="submit" class="btn btn-groupo btn-publish">Publier</button>
         </div>
 
     </form>
@@ -48,8 +48,7 @@ import Api from '../services/Api';
       async handleSubmit() {  
         let body = { content: this.message}; 
 
-        // if image uploaded, send a formData object
-
+        // Si l'image est téléchargée, envoyez un formData object
         if (this.selectedFile !== null) {
           const formData = new FormData();
           formData.append('post', JSON.stringify({ content: this.message}));
@@ -94,7 +93,7 @@ import Api from '../services/Api';
         if(allowedTypes.includes(file.type) && !tooLarge) {
           this.selectedFile = e.target.files[0];
 
-          // preview uploaded image
+          // prévisualiser l'image téléchargée
           let reader = new FileReader;
           // const vm = this;
 
@@ -105,7 +104,7 @@ import Api from '../services/Api';
 
         } else {
             this.valid = false;
-            this.errorMessage = tooLarge ? "File too large: size must not exceed 1 MB": "Only images are allowed";
+            this.errorMessage = tooLarge ? "Fichier trop volumineux : la taille ne doit pas dépasser 1 Mo": "Seules les images sont autorisées";
             this.$refs.newPostImage.value = '';
         }
       },      

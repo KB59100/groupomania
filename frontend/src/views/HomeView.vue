@@ -1,17 +1,17 @@
 <template>
   <div class="container-compo mx-auto">
     <div v-if="user" class="wall mx-auto">
-      <h1 class="wall-title my-4">The News Feed</h1>
+      <h1 class="wall-title my-4">fil d'actualité</h1>
       <NewPost @newpost="setReload" />
       <Feed :key="compoKey"/>
     </div>
     <div v-else class="welcome mx-auto">
       <img src="../assets/icon-above-font.png" alt="logo Groupomania" class="logo mx-auto d-block">
-      <h1 class="welcome-title mt-4">Welcome to the Groupomania social network</h1>
-      <p class= "welcome-text mt-4">Sign up to share your ideas and inspirations and stay in touch with your colleagues!</p>
+      <h1 class="welcome-title mt-4">Bienvenue sur le réseau social Groupomania</h1>
+      <p class= "welcome-text mt-4">Inscrivez-vous pour partager vos idées et inspirations et rester en contact avec vos collègues!</p>
       <div class="d-flex align-items-center justify-content-between mt-5 welcome-btns">
-          <router-link to="/signup" class="btn btn-primary btn-signup">Create an account</router-link>
-          <span class="ms-auto">Already have an account ?</span>
+          <router-link to="/signup" class="btn btn-primary btn-signup">Créer un compte</router-link>
+          <span class="ms-auto">Vous avez déjà un compte ?</span>
           <router-link to="/login" class="btn btn-primary btn-login">Login</router-link>
       </div>
     </div>

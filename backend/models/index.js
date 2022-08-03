@@ -30,7 +30,7 @@ const sequelize = new Sequelize({
   host: process.env.DB_HOST,
   dialect: "mysql",
 });
-sequelize.sync({ force: true });
+//sequelize.sync({ force: true });
 
 fs.readdirSync(__dirname)
   .filter((file) => {
@@ -53,8 +53,6 @@ Object.keys(db).forEach((modelName) => {
 });
 
 db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
+db.Sequelize = Sequelize;
 
-module.exports = {
-  sequelize,
-};
+module.exports = db;

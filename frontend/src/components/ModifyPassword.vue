@@ -1,31 +1,31 @@
 <template>
     <div class="container-compo mx-auto">
         <div class="container mt-5">
-            <h1 class="mb-4">Update<br>Change password</h1>
+            <h1 class="mb-4">Mise à jour<br>Changer le mot de passe</h1>
 
             <form @submit.prevent="handleSubmit" id="myForm">
                 <div class="mb-3">
-                    <label for="currentPwd" class="form-label">Current Password</label>
+                    <label for="currentPwd" class="form-label">Mot de passe actuel</label>
                     <input v-model="currentPwd" @click="resetErrorMessage" type="password" class="form-control"
                         id="currentPwd" required />
                 </div>
                 <div class="mb-3">
-                    <label for="newPwd" class="form-label">New Password</label>
+                    <label for="newPwd" class="form-label">Nouveau mot de passe</label>
                     <input v-model="newPwd" @click="resetErrorMessage" type="password" class="form-control" id="newPwd"
                         required />
                 </div>
-                <p v-if="isSamePassword" class="validFeedback">The new password must be different!</p>
+                <p v-if="isSamePassword" class="validFeedback">Le nouveau mot de passe doit être différent !</p>
                 <div class="mb-4">
-                    <label for="confirmPwd" class="form-label">Confirm password</label>
+                    <label for="confirmPwd" class="form-label">Confirmez le mot de passe</label>
                     <input v-model="confirmPwd" @click="resetErrorMessage" type="password" class="form-control"
                         id="confirmPwd" required />
                 </div>
                 <p v-if="!isConfirmPasswordOK" class="validFeedback">The passwords are different!</p>
                 <p v-if="!valid" class="validFeedback">{{ errorMessage }}</p>
 
-                <button @click.prevent="abort" class="btn btn-light btn-space btn-abort">Return</button>
+                <button @click.prevent="abort" class="btn btn-light btn-space btn-abort">Revenir</button>
                 <button :disabled="isSamePassword || !isConfirmPasswordOK" type="submit"
-                    class="btn btn-primary btn-space btn-groupo">Validate</button>
+                    class="btn btn-primary btn-space btn-groupo">Valider</button>
             </form>
 
         </div>
@@ -93,7 +93,7 @@
                         this.errorMessage = error.response.data.message;
                     } else {
                         this.errorMessage =
-                            "Your password must contain at least 8 characters, contain letters (at least one uppercase and at least one lowercase), at least 2 numbers and at least one special character.";
+                            "Votre mot de passe doit contenir au moins 8 caractères, contenir des lettres (au moins une majuscule et au moins une minuscule), au moins 2 chiffres et au moins un caractère spécial.";
                     }
                 }
             },

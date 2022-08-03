@@ -1,11 +1,11 @@
 <template>
   <div class="container-compo mx-auto">
     <div class="container mt-2">
-      <h1 class="mb-4">Editing the profile</h1>
+      <h1 class="mb-4">Modification du profil</h1>
 
       <form @submit.prevent="handleSubmit" id="myForm" enctype="multipart/form-data" class="mb-5">
         <div class="mb-3">
-          <label for="usernameInput" class="form-label">User Name</label>
+          <label for="usernameInput" class="form-label">Nom</label>
           <input v-model="username" @click="resetErrorMessage" type="text" class="form-control" id="usernameInput" required />
         </div>
         <div class="mb-3">
@@ -16,16 +16,16 @@
           <label for="bioInput" class="form-label">Bio</label>
           <textarea v-model="bio" @click="resetErrorMessage" type="text" class="form-control" id="bioInput" rows="5" @input="checkBio" />
         </div>
-        <p v-if="isBioTooLong" class="validFeedback">The biografi must not exceed the 255 characters allowed</p>
+        <p v-if="isBioTooLong" class="validFeedback">La biographie ne doit pas dépasser les 255 caractères autorisés</p>
         <div class="mb-4">
             <label for="avatarInput" class="form-label">Avatar</label>
             <div class="imagePreviewWrapper mb-3" :style="{'background-image': `url(${previewAvatar})`}" ></div>
             <input v-if="!isNewAvatar" class="form-control" type="file" id="avatarInput" ref="fileInput" @change="onFileSelected"  @click="resetErrorMessage">
-            <button v-else @click.prevent="removeImage" class="btn btn-cancel mb-3">Change avatar</button>
+            <button v-else @click.prevent="removeImage" class="btn btn-cancel mb-3">Changer l'avatar</button>
         </div>
         <p v-if="!valid" class="validFeedback">{{ errorMessage }}</p>
-        <button @click.prevent="abort" class="btn btn-light btn-space btn-abort">Return</button>
-        <button :disabled="!valid" type="submit" class="btn btn-space btn-groupo">Save</button>
+        <button @click.prevent="abort" class="btn btn-light btn-space btn-abort">Retour</button>
+        <button :disabled="!valid" type="submit" class="btn btn-space btn-groupo">Enregistrer</button>
       </form>
     </div>
   </div>
@@ -64,7 +64,7 @@ export default {
       }
       let body = userInfos;
 
-      // if image uploaded, send a formData object
+      // si l'image est téléchargée, envoyer a formData object
 
       if (this.selectedFile !== null) {
         const formData = new FormData();
@@ -92,9 +92,9 @@ export default {
         // mise à jour de user dans le state
         this.$store.dispatch('setUser', updatedUser);
 
-        alert('Changes have been saved !');
+        alert('Les modifications ont été enregistrées !');
 
-        // redirect to the ViewProfile page
+        // redirection vers ViewProfile page
         this.$router.go(-1);
 
       } catch (error) {

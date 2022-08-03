@@ -20,8 +20,8 @@
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-right" v-bind:aria-labelledby="'dropdownMenuButton' + comment.id">
-                        <li><button v-if="user.id === comment.User.id" class="dropdown-item" @click="editComment(comment.id)">Edit</button></li>
-                        <li><button class="dropdown-item dropdown-item-delete" @click="deleteComment(comment.id)">To delete</button></li>
+                        <li><button v-if="user.id === comment.User.id" class="dropdown-item" @click="editComment(comment.id)">Editer</button></li>
+                        <li><button class="dropdown-item dropdown-item-delete" @click="deleteComment(comment.id)">Supprimer</button></li>
                     </ul>
                     
                 </div>
@@ -33,17 +33,17 @@
             <p class="card-text" ref="commentContent"></p>
         </div>
 
-        <!-- Display when editing the comment -->
+        <!-- Afficher lors de l'édition du commentaire-->
         <div v-show="toModify" class="card-body px-3 pt-1">
-            <h3 class="text-center mb-3">Edit comment</h3>
+            <h3 class="text-center mb-3">Editer commentaire</h3>
             <form @submit.prevent="handleSubmit" id="commentEditForm" enctype="multipart/form-data" class="mb-5">
                 <div class="mb-3">
-                    <label v-bind:for="'commentInput' + comment.id" class="form-label">Comment</label>
+                    <label v-bind:for="'commentInput' + comment.id" class="form-label">Commentaire</label>
                     <textarea @click="resetErrorMessage" v-model="messageEdit" type="text" class="form-control" v-bind:id="'commentInput' + comment.id" rows="3" />
                 </div>
                 <p v-if="!validEdit" class="validFeedback">{{ errorMessageEdit }}</p>
-                <button @click.prevent="abort" class="btn btn-white btn-space btn-abort">Cancel</button>
-                <button :disabled="!validEdit" type="submit" class="btn btn-groupo">Save</button>
+                <button @click.prevent="abort" class="btn btn-white btn-space btn-abort">Annuler</button>
+                <button :disabled="!validEdit" type="submit" class="btn btn-groupo">Enregistrer</button>
             </form>
         </div>
 
@@ -106,7 +106,7 @@
                 const postId = this.$props.postId;
                 const commentId = id;
 
-                let okToDelete = confirm('Are you sure you want to delete this comment?')
+                let okToDelete = confirm('êtes-vous sûr de vouloir supprimer ce commentaire?')
                 if (!okToDelete) {
                     return
                 }
@@ -118,7 +118,7 @@
                         }
                     });
 
-                    alert('Comment deleted!');
+                    alert('Commentaire supprimé!');
                     this.$router.go();
 
                 } catch (error) {
@@ -145,7 +145,7 @@
                         },
                     });
 
-                    alert('The comment has been edited successfully.');
+                    alert('Le commentaire a été modifié avec succès.');
 
                     this.messageEdit = '';
                     this.toModify = false;

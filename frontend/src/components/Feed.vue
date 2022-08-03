@@ -6,7 +6,7 @@
                     <PostItem v-bind:post="post" @postdeleted="getAllPosts()" @postupdated="getAllPosts()" />
                 </li>
             </ul>
-            <p v-else class="zero-post text-center">No posts published yet!</p>
+            <p v-else class="zero-post text-center">Aucun article publié pour le moment!</p>
         </div>
     </section>
 </template>

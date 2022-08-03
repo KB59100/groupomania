@@ -10,9 +10,9 @@
         <p class="text-muted mb-3">{{ email }}</p>
         <p class="mb-4 text-bio" ref="bio"></p>
         <div class="d-flex justify-content-center mb-2 card-btns">
-          <router-link :to="`/modify-profile/${user.id}`" class="btn btn-primary  btn-modify" v-if="loggedIn">Edit profile</router-link>
-          <router-link :to="`/modify-password/${user.id}`" class="btn btn-primary btn-password" v-if="loggedIn">Change password</router-link>
-          <button @click="deleteUser" class="btn btn-groupo">Delete account</button>
+          <router-link :to="`/modify-profile/${user.id}`" class="btn btn-primary  btn-modify" v-if="loggedIn">Editer le profile</router-link>
+          <router-link :to="`/modify-password/${user.id}`" class="btn btn-primary btn-password" v-if="loggedIn">Changer le mot de passe</router-link>
+          <button @click="deleteUser" class="btn btn-groupo">Supprimer le compte</button>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@ export default {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
 
-      let okToDelete = confirm('Are you sure you want to delete your account?')
+      let okToDelete = confirm('Êtes-vous sûr de vouloir supprimer votre compte?')
       if(!okToDelete) {
         return
       }
@@ -63,7 +63,7 @@ export default {
 
         this.$store.dispatch('setLogout');
 
-        alert('Account deleted!')
+        alert('Compte supprimé!')
 
         // redirect to the registration page
         this.$router.push('/signup');
@@ -81,7 +81,7 @@ export default {
       try {
         
         if (parseInt(userIdParams) !== userIdFromLocalStore) {
-          alert("Access to this page not authorized");
+          alert("Accès à cette page non autorisé");
           this.$router.push('/');
           return
         }
@@ -98,7 +98,7 @@ export default {
         this.$refs.bio.innerHTML = this.bio !== null ? getClickableLink(response.data.bio) : '';
         this.avatar = response.data.avatar;
 
-        // Update of the plain email in the state
+        // Mise à jour de l'email 
 
         const updatedUser = Object.assign({...this.$store.state.user}, {email: this.email});
         this.$store.dispatch('setUser', updatedUser);

@@ -5,16 +5,16 @@
 
       <form  @submit.prevent="handleSubmit">
         <div class="mb-3">
-          <label for="usernameInput" class="form-label">User Name</label>
+          <label for="usernameInput" class="form-label">Nom</label>
           <input @click="resetErrorMessage" v-model="username" type="text" class="form-control" id="usernameInput" required />
         </div>
         <div class="mb-4">
-          <label for="passwordInput" class="form-label">Password</label>
+          <label for="passwordInput" class="form-label">Mot de passe</label>
           <input @click="resetErrorMessage" v-model="password" type="password" class="form-control" id="passwordInput" required />
         </div>
         <p v-if="!valid" id="errorMessageId" class="validFeedback">{{ errorMessage }}</p>
-        <button type="submit" class="btn btn-primary btn-groupo">To log in</button>
-        <p class="mt-3">Dont have account yet? <router-link to="/signup">Registration</router-link></p>
+        <button type="submit" class="btn btn-primary btn-groupo">Login</button>
+        <p class="mt-3">Vous n'avez pas encore de compte? <router-link to="/signup">S'enregistrer</router-link></p>
       </form>
     </div>
   </div>

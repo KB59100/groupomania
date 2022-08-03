@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
@@ -22,13 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       models.Post.hasMany(models.Like);
     }
   }
-  Post.init({
-    // userId: DataTypes.INTEGER,
-    content: DataTypes.TEXT,
-    imageUrl: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Post',
-  });
+  Post.init(
+    {
+      // userId: DataTypes.INTEGER,
+      content: DataTypes.TEXT,
+      imageUrl: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Post",
+    }
+  );
   return Post;
 };

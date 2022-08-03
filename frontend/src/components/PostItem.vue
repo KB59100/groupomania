@@ -23,8 +23,8 @@
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-right" v-bind:aria-labelledby="'dropdownMenuButton' + post.id">
-                        <li><button v-if="user.id === post.User.id" class="dropdown-item" @click="editPost(post.id)">Edit</button></li>
-                        <li><button class="dropdown-item dropdown-item-delete" @click="deletePost(post.id)">Delete</button></li>
+                        <li><button v-if="user.id === post.User.id" class="dropdown-item" @click="editPost(post.id)">Editer</button></li>
+                        <li><button class="dropdown-item dropdown-item-delete" @click="deletePost(post.id)">Supprimer</button></li>
                     </ul>
                     
                 </div>
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <!-- Post content: text and image -->
+        <!-- Contenu du message texte et image -->
 
         <div v-show="!toModify" class="card-body">
             <p class="card-text" ref="mycardtext">
@@ -41,10 +41,10 @@
             <img loading="lazy" v-if="post.imageUrl" :src="post.imageUrl" alt="image" class="post-image">
         </div>
 
-        <!-- Display when editing -->
+        <!-- Afficher lors de l'édition -->
 
         <div v-if="toModify" class="card-body">
-            <h3 class="text-center mb-3">Edit post</h3>
+            <h3 class="text-center mb-3">Modifier le message</h3>
             <form @submit.prevent="modifyPost" id="myForm" enctype="multipart/form-data" class="mb-3">
                 <div class="mb-3">
                     <label for="messageInput" class="form-label">Message</label>
@@ -58,18 +58,18 @@
                 </div>
                 
                 <p v-if="!validEdit" class="validFeedback">{{ errorMessageEdit }}</p>
-                <p v-if="isEmptyContent" class="validFeedback">A single message must contain at least two characters.</p>
-                <button @click.prevent="abort" class="btn btn-light btn-space btn-abort">Cancel</button>
-                <button :disabled="!validEdit || isEmptyContent" type="submit" class="btn btn-groupo">Save</button>
+                <p v-if="isEmptyContent" class="validFeedback">Un seul message doit contenir au moins deux caractères.</p>
+                <button @click.prevent="abort" class="btn btn-light btn-space btn-abort">Annuler</button>
+                <button :disabled="!validEdit || isEmptyContent" type="submit" class="btn btn-groupo">sauvegarder</button>
             </form>
             
         </div>
 
-        <!-- Display like button -->
+        <!-- Afficher le bouton J'aime -->
         
         <LikeItem v-bind:postId="post.id" v-bind:likes="likes" />
 
-       <!-- Display comments -->
+       <!-- Afficher les commentaires -->
 
         <div v-if="comments.length > 0 && comments.length <= 2" class="post-comments">
             <ul>
@@ -84,7 +84,7 @@
                     <CommentItem v-bind:comment="comment" v-bind:postId="post.id" />
                 </li>
             </ul>
-            <button class="btn btn-white btn-showmore mx-2" @click="showMoreComments" ref="showMoreBtn">See more reviews</button>
+            <button class="btn btn-white btn-showmore mx-2" @click="showMoreComments" ref="showMoreBtn">Voir plus d'avis</button>
             <ul v-if="showMore">
                 <li v-for="comment in comments.slice(2)" :key="comment.id" class="mb-2">
                     <CommentItem v-bind:comment="comment" v-bind:postId="post.id" />
@@ -92,7 +92,7 @@
             </ul>
         </div>
 
-        <!-- Display edit field new comment -->
+        <!-- Afficher le champ d'édition nouveau commentaire -->
 
         <NewComment v-if="!toModify" v-bind:postId="post.id" @newcomment="Date.now()" />
     </div>
@@ -162,7 +162,7 @@
                 const token = localStorage.getItem("token");
                 const postId = id;
 
-                let okToDelete = confirm('Are you sure to delete this post?')
+                let okToDelete = confirm('Êtes-vous sûr de vouloir supprimer ce message?')
                 if (!okToDelete) {
                     return
                 }
@@ -216,7 +216,7 @@
                         },
                     });
 
-                    alert('Les modifications ont bien été enregistrées !');
+                    alert('Les modifications ont bien été enregistrées!');
 
                     console.log("updated data", response.data);
 

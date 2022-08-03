@@ -22,10 +22,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto" v-if="!loggedIn">
           <li class="nav-item">
-            <router-link to="/login" class="nav-link login-link">To log in</router-link>
+            <router-link to="/login" class="nav-link login-link">login</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/signup" class="nav-link signup-link">Register</router-link>
+            <router-link to="/signup" class="nav-link signup-link">S'enregistrer</router-link>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto" v-if="loggedIn">
@@ -40,7 +40,7 @@
             </router-link>
           </li>
           <li class="nav-item nav-item-logout">
-            <button @click="logOut" class="nav-link logout-link btn btn-groupo">Sign out</button>
+            <button @click="logOut" class="nav-link logout-link btn btn-groupo">Deconnexion</button>
           </li>
         </ul>
       </div>

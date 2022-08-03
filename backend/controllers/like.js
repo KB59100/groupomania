@@ -35,8 +35,8 @@ exports.like = (req, res, next) => {
                 // Add a like
 
                 db.Like.create({
-                    userId: req.auth.userId,
-                    postId: post.id
+                    UserId: req.auth.userId,
+                    PostId: post.id
                 })
                 .then(() => res.status(201).json({
                     message: 'Like added !'

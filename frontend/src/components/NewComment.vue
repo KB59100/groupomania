@@ -15,7 +15,7 @@
             <p v-if="!valid" class="validFeedback">{{ errorMessage }}</p>
 
             <div class="d-flex justify-content-end mb-2 card-btns">
-                <button type="submit" class="btn btn-groupo">Answer</button>
+                <button type="submit" class="btn btn-groupo">Réponse</button>
             </div>
 
         </form>

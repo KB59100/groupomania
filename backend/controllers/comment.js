@@ -1,13 +1,13 @@
 const db = require('../models');
 
-// ********** Create a COMMENT **********
+// ********** Créer un COMMENTAIRE **********
 // **********************************************
 
 exports.createComment = (req, res, next) => {
 
     if (req.body.content.trim().length < 2) {
         return res.status(400).json({
-            message: "The message must contain at least two characters"
+          message: "Le message doit contenir au moins deux caractères",
         });
     }
 
@@ -17,31 +17,30 @@ exports.createComment = (req, res, next) => {
         }
     })
     .then(post => {
-
-        // Check the existence of the post
-
-        if (post === null) {
-            return res.status(404).json({
-                message: 'post not found !'
-            });
-        }
-
-        // Save the comment in the DB
-
-        db.Comment.create({
-            userId: req.auth.userId,
-            postId: post.id,
-            content: req.body.content
-        })
-        .then(() => res.status(201).json({
-            message: 'Comment added !'
-        }))
-        .catch(error => {
-            res.status(400).json({
-                message: error.message
-            })
+      // Vérifier l'existence du poste
+      if (post === null) {
+        return res.status(404).json({
+          message: "message introuvable!",
         });
-        
+      }
+
+      // Save the comment in the DB
+
+      db.Comment.create({
+        UserId: req.auth.userId,
+        PostId: post.id,
+        content: req.body.content,
+      })
+        .then(() =>
+          res.status(201).json({
+            message: "Commentaire ajouté!",
+          })
+        )
+        .catch((error) => {
+          res.status(400).json({
+            message: error.message,
+          });
+        });
     })
     .catch(error => {
         res.status(404).json({
