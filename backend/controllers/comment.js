@@ -1,22 +1,21 @@
-const db = require('../models');
+const db = require("../models");
 
 // ********** Créer un COMMENTAIRE **********
 // **********************************************
 
 exports.createComment = (req, res, next) => {
+  if (req.body.content.trim().length < 2) {
+    return res.status(400).json({
+      message: "Le message doit contenir au moins deux caractères",
+    });
+  }
 
-    if (req.body.content.trim().length < 2) {
-        return res.status(400).json({
-          message: "Le message doit contenir au moins deux caractères",
-        });
-    }
-
-    db.Post.findOne({
-        where: {
-            id: req.params.id
-        }
-    })
-    .then(post => {
+  db.Post.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((post) => {
       // Vérifier l'existence du poste
       if (post === null) {
         return res.status(404).json({
@@ -42,34 +41,30 @@ exports.createComment = (req, res, next) => {
           });
         });
     })
-    .catch(error => {
-        res.status(404).json({
-            message: error.message,
-            error
-        });
+    .catch((error) => {
+      res.status(404).json({
+        message: error.message,
+        error,
+      });
     });
-
 };
-
 
 // ********** Mise a jour du commentaire **********
 // *********************************************** **
 
 exports.updateComment = (req, res, next) => {
+  if (req.body.content.trim().length < 2) {
+    return res.status(400).json({
+      message: "Le message doit contenir au moins deux caractères",
+    });
+  }
 
-    if (req.body.content.trim().length < 2) {
-        return res.status(400).json({
-          message: "Le message doit contenir au moins deux caractères",
-        });
-    }
-
-    db.Post.findOne({
-        where: {
-            id: req.params.id
-        }
-    })
-    .then(post => {
-
+  db.Post.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((post) => {
       // Vérifiez le message s'il existe
 
       if (post === null) {
@@ -94,7 +89,7 @@ exports.updateComment = (req, res, next) => {
 
           // Vérifier si utilisateur = créateur du commentaire
 
-          if (req.auth.userId !== comment.userId) {
+          if (req.auth.userId !== comment.UserId) {
             return res.status(403).json({
               message:
                 "Demande non autorisée! Vous n'avez pas le droit de modifier le commentaire!",
@@ -132,40 +127,37 @@ exports.updateComment = (req, res, next) => {
           });
         });
     })
-    .catch(error => {
-        res.status(404).json({
-            message: error.message,
-            error
-        });
+    .catch((error) => {
+      res.status(404).json({
+        message: error.message,
+        error,
+      });
     });
-
 };
-
 
 // ********** Suppression du commentaire**********
 // *********************************************** **
 
 exports.deleteComment = (req, res, next) => {
+  db.Post.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((post) => {
+      // Vérifie si le post existe
+      if (post === null) {
+        return res.status(404).json({
+          message: "message introuvable!",
+        });
+      }
 
-    db.Post.findOne({
+      db.Comment.findOne({
         where: {
-            id: req.params.id
-        }
-    })
-    .then(post => {
-
-        // Vérifie si le post existe
-        if (post === null) {
-            return res.status(404).json({
-              message: "message introuvable!",
-            });
-        }
-
-        db.Comment.findOne({
-            where: {
-                id: req.params.commentId
-            }
-        }).then(comment => {
+          id: req.params.commentId,
+        },
+      })
+        .then((comment) => {
           // Vérifie si le commentaire existe
 
           if (comment === null) {
@@ -182,7 +174,7 @@ exports.deleteComment = (req, res, next) => {
             },
           })
             .then((user) => {
-              if (req.auth.userId === comment.userId || user.isAdmin) {
+              if (req.auth.userId === comment.UserId || user.isAdmin) {
                 // Suppession du commentaire dans la BD
 
                 db.Comment.destroy({
@@ -213,19 +205,17 @@ exports.deleteComment = (req, res, next) => {
               });
             });
         })
-        .catch(error => {
-            res.status(404).json({
-                message: error.message,
-                error
-            });
-        });
-        
-    })
-    .catch(error => {
-        res.status(404).json({
+        .catch((error) => {
+          res.status(404).json({
             message: error.message,
-            error
+            error,
+          });
         });
+    })
+    .catch((error) => {
+      res.status(404).json({
+        message: error.message,
+        error,
+      });
     });
-
 };

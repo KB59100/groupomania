@@ -104,7 +104,7 @@ import Api from '../services/Api';
 
         } else {
             this.valid = false;
-            this.errorMessage = tooLarge ? "Fichier trop volumineux : la taille ne doit pas dépasser 1 Mo": "Seules les images sont autorisées";
+            this.errorMessage = tooLarge ? "Fichier trop volumineux: la taille ne doit pas dépasser 1Mo": "Seules les images sont autorisées";
             this.$refs.newPostImage.value = '';
         }
       },      

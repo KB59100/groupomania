@@ -4,14 +4,11 @@ const db = require("../models");
 // ********** Créer un POSTE **********
 // ****************************************
 exports.createPost = (req, res, next) => {
-  // Vérification de l'image
 
   let postObj;
 
   if (req.file) {
     const content = JSON.parse(req.body.post).content.trim();
-
-    // Validation du contenu du message lorsqu'il y a une image
 
     if (content !== "" && content.length < 2) {
       return res.status(400).json({
@@ -252,7 +249,7 @@ exports.deletePost = (req, res, next) => {
         },
       })
         .then((user) => {
-          if (req.auth.userId === post.userId || user.isAdmin) {
+          if (req.auth.userId === post.UserId || user.isAdmin) {
             // Delete the image from the images folder (if image present)
 
             if (post.imageUrl !== null) {
@@ -342,7 +339,7 @@ exports.updatePost = (req, res, next) => {
 
       // Vérifier si utilisateur = créateur de publication
 
-      if (req.auth.userId !== post.userId) {
+      if (req.auth.userId !== post.UserId) {
         return res.status(403).json({
           message: "Demande non autorisée!",
         });

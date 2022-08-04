@@ -1,7 +1,5 @@
 const multer = require('multer');
-
 // Créer un dictionnaire MIME_TYPES avec les types de fichiers acceptés
-
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
@@ -11,7 +9,6 @@ const MIME_TYPES = {
 };
 
 // Gérer le stockage des fichiers avec Multer
-
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'images');
@@ -24,7 +21,6 @@ const storage = multer.diskStorage({
 });
 
 // Valider les fichiers
-
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/gif'];
   if(!allowedTypes.includes(file.mimetype)) {

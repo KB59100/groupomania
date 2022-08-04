@@ -1,7 +1,7 @@
 // Load environment variable from .env file
-require('dotenv').config();
+require("dotenv").config();
 // let dotenv = require('dotenv');
-NODE_ENV="test"
+NODE_ENV = "test";
 
 module.exports = {
   development: {
@@ -9,20 +9,20 @@ module.exports = {
     password: process.env.DEV_DB_PASSWORD,
     database: process.env.DEV_DB_NAME,
     host: process.env.DEV_DB_HOST,
-    dialect: 'mysql'
+    dialect: "mysql",
   },
   test: {
     username: process.env.TEST_DB_USERNAME,
     password: process.env.TEST_DB_PASSWORD,
     database: process.env.TEST_DB_NAME,
     host: process.env.TEST_DB_HOST,
-    dialect: 'mysql'
+    dialect: "mysql",
   },
   production: {
     username: process.env.PROD_DB_USERNAME,
     password: process.env.PROD_DB_PASSWORD,
     database: process.env.PROD_DB_NAME,
     host: process.env.PROD_DB_HOST,
-    dialect: 'mysql'
-  }
+    dialect: "mysql",
+  },
 };

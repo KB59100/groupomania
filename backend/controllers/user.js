@@ -92,7 +92,6 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res, next) => {
   // Récupérer le pseudo de la base de données
-
   db.User.findOne({
     where: {
       username: req.body.username,
@@ -106,9 +105,7 @@ exports.signin = (req, res, next) => {
           message: "Utilisateur non trouvé!",
         });
       }
-
       // Comparaison du mot de passe saisi par l'utilisateur avec le mot de passe haché dans la BD
-
       bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {

@@ -92,7 +92,7 @@ export default {
         // mise à jour de user dans le state
         this.$store.dispatch('setUser', updatedUser);
 
-        alert('Les modifications ont été enregistrées !');
+        alert('Les modifications ont été enregistrées!');
 
         // redirection vers ViewProfile page
         this.$router.go(-1);
