@@ -3,29 +3,85 @@
     <div class="container mt-2">
       <h1 class="mb-4">Modification du profil</h1>
 
-      <form @submit.prevent="handleSubmit" id="myForm" enctype="multipart/form-data" class="mb-5">
+      <form
+        @submit.prevent="handleSubmit"
+        id="myForm"
+        enctype="multipart/form-data"
+        class="mb-5"
+      >
         <div class="mb-3">
           <label for="usernameInput" class="form-label">Nom</label>
-          <input v-model="username" @click="resetErrorMessage" type="text" class="form-control" id="usernameInput" required />
+          <input
+            v-model="username"
+            @click="resetErrorMessage"
+            type="text"
+            class="form-control"
+            id="usernameInput"
+            required
+          />
         </div>
         <div class="mb-3">
           <label for="emailInput" class="form-label">Email</label>
-          <input v-model="email" type="email" class="form-control" id="emailInput" disabled />
+          <input
+            v-model="email"
+            type="email"
+            class="form-control"
+            id="emailInput"
+            disabled
+          />
         </div>
         <div class="mb-3">
           <label for="bioInput" class="form-label">Bio</label>
-          <textarea v-model="bio" @click="resetErrorMessage" type="text" class="form-control" id="bioInput" rows="5" @input="checkBio" />
+          <textarea
+            v-model="bio"
+            @click="resetErrorMessage"
+            type="text"
+            class="form-control"
+            id="bioInput"
+            rows="5"
+            @input="checkBio"
+          />
         </div>
-        <p v-if="isBioTooLong" class="validFeedback">La biographie ne doit pas dépasser les 255 caractères autorisés</p>
+        <p v-if="isBioTooLong" class="validFeedback">
+          La biographie ne doit pas dépasser les 255 caractères autorisés
+        </p>
         <div class="mb-4">
-            <label for="avatarInput" class="form-label">Avatar</label>
-            <div class="imagePreviewWrapper mb-3" :style="{'background-image': `url(${previewAvatar})`}" ></div>
-            <input v-if="!isNewAvatar" class="form-control" type="file" id="avatarInput" ref="fileInput" @change="onFileSelected"  @click="resetErrorMessage">
-            <button v-else @click.prevent="removeImage" class="btn btn-cancel mb-3">Changer l'avatar</button>
+          <label for="avatarInput" class="form-label">Avatar</label>
+          <div
+            class="imagePreviewWrapper mb-3"
+            :style="{ 'background-image': `url(${previewAvatar})` }"
+          ></div>
+          <input
+            v-if="!isNewAvatar"
+            class="form-control"
+            type="file"
+            id="avatarInput"
+            ref="fileInput"
+            @change="onFileSelected"
+            @click="resetErrorMessage"
+          />
+          <button
+            v-else
+            @click.prevent="removeImage"
+            class="btn btn-cancel mb-3"
+          >
+            Changer l'avatar
+          </button>
         </div>
         <p v-if="!valid" class="validFeedback">{{ errorMessage }}</p>
-        <button @click.prevent="abort" class="btn btn-light btn-space btn-abort">Retour</button>
-        <button :disabled="!valid" type="submit" class="btn btn-space btn-groupo">Enregistrer</button>
+        <button
+          @click.prevent="abort"
+          class="btn btn-light btn-space btn-abort"
+        >
+          Retour
+        </button>
+        <button
+          :disabled="!valid"
+          type="submit"
+          class="btn btn-space btn-groupo"
+        >
+          Enregistrer
+        </button>
       </form>
     </div>
   </div>
@@ -33,7 +89,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Api from '../services/Api';
+import Api from "../services/Api";
 
 export default {
   name: "ModifyProfile",
@@ -45,31 +101,30 @@ export default {
       userId: this.$store.state.user.id,
       selectedFile: null,
       valid: true,
-      errorMessage: '',
+      errorMessage: "",
       previewAvatar: this.$store.state.user.avatar,
       previousAvatar: this.$store.state.user.avatar,
       isBioTooLong: false,
-      isNewAvatar : false
+      isNewAvatar: false,
     };
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user"]),
   },
   methods: {
     async handleSubmit() {
-      
       const userInfos = {
         username: this.username,
-        bio: this.bio
-      }
+        bio: this.bio,
+      };
       let body = userInfos;
 
       // si l'image est téléchargée, envoyer a formData object
 
       if (this.selectedFile !== null) {
         const formData = new FormData();
-        formData.append('user', JSON.stringify(userInfos));
-        formData.append('avatar', this.selectedFile);
+        formData.append("user", JSON.stringify(userInfos));
+        formData.append("avatar", this.selectedFile);
         body = formData;
       }
 
@@ -78,30 +133,32 @@ export default {
 
       try {
         const response = await Api.put(`users/${userId}`, body, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }});
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
         const updatedData = response.data.updatedData;
-        const updatedUser = Object.assign({...this.$store.state.user}, {...updatedData});
-        
+        const updatedUser = Object.assign(
+          { ...this.$store.state.user },
+          { ...updatedData }
+        );
+
         // mise à jour de user dans localStorage
-        localStorage.setItem("user", JSON.stringify(updatedUser))
+        localStorage.setItem("user", JSON.stringify(updatedUser));
 
         // mise à jour de user dans le state
-        this.$store.dispatch('setUser', updatedUser);
+        this.$store.dispatch("setUser", updatedUser);
 
-        alert('Les modifications ont été enregistrées!');
+        alert("Les modifications ont été enregistrées!");
 
         // redirection vers ViewProfile page
         this.$router.go(-1);
-
       } catch (error) {
-          console.log(error.response.data);
-          this.valid = false;
-          this.errorMessage = error.response.data.message;
-          
+        console.log(error.response.data);
+        this.valid = false;
+        this.errorMessage = error.response.data.message;
       }
     },
     onFileSelected(e) {
@@ -109,100 +166,107 @@ export default {
       if (!file) {
         this.previewAvatar = this.previousAvatar;
         this.selectedFile = null;
-        return
+        return;
       }
-      const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      const allowedTypes = [
+        "image/jpg",
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif",
+      ];
       const MAX_SIZE = 1048576;
       const tooLarge = file.size > MAX_SIZE;
 
-      if(allowedTypes.includes(file.type) && !tooLarge) {
+      if (allowedTypes.includes(file.type) && !tooLarge) {
         this.selectedFile = e.target.files[0];
         this.isNewAvatar = true;
 
         // preview uploaded image
-        let reader = new FileReader;
-        reader.onload = e => {
+        let reader = new FileReader();
+        reader.onload = (e) => {
           this.previewAvatar = e.target.result;
-        }
+        };
         reader.readAsDataURL(file);
         // this.$emit('input', file);
-
       } else {
-          this.valid = false;
-          this.errorMessage = tooLarge ? "Fichier trop volumineux : la taille ne doit pas dépasser 1 Mo" : "Seules les images sont autorisées";
-          this.$refs.fileInput.value = '';
+        this.valid = false;
+        this.errorMessage = tooLarge
+          ? "Fichier trop volumineux : la taille ne doit pas dépasser 1 Mo"
+          : "Seules les images sont autorisées";
+        this.$refs.fileInput.value = "";
       }
     },
     abort() {
       // redirection vers la page ViewProfile
-        this.$router.go(-1);
+      this.$router.go(-1);
     },
     resetErrorMessage() {
-        this.valid = true;
+      this.valid = true;
     },
     checkBio() {
-      const bioLength = document.getElementById('bioInput').value.length;
-      
+      const bioLength = document.getElementById("bioInput").value.length;
+
       if (bioLength > 255) {
         this.isBioTooLong = true;
         this.valid = false;
-      }  else {
+      } else {
         this.isBioTooLong = false;
       }
     },
     removeImage() {
-        this.previewAvatar = this.previousAvatar;
-        this.selectedFile = null;
-        this.isNewAvatar = false;
+      this.previewAvatar = this.previousAvatar;
+      this.selectedFile = null;
+      this.isNewAvatar = false;
     },
-  }
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .container-compo {
-    max-width: 500px;
-    margin-top: 3%;
-  }
+.container-compo {
+  max-width: 500px;
+  margin-top: 3%;
+}
 
-  h1 {
-    font-weight: 700;
-    text-align: center;
-  }
+h1 {
+  font-weight: 700;
+  text-align: center;
+}
 
-  textarea {
-    resize: none;
-  }
+textarea {
+  resize: none;
+}
 
-  .btn-cancel {
-    background-color: #EFEFEF;
-    border-color: #EFEFEF;
-    color: #111 !important;
-  }
+.btn-cancel {
+  background-color: #efefef;
+  border-color: #efefef;
+  color: #111 !important;
+}
 
-  .btn-cancel:hover {
-    background-color: #d6d6d6;
-  }
+.btn-cancel:hover {
+  background-color: #d6d6d6;
+}
 
-  .btn-space {
-    margin-right: 10px;
-  }
+.btn-space {
+  margin-right: 10px;
+}
 
-  .btn-abort:hover {
-    background-color: #d6d6d6;
-  }
+.btn-abort:hover {
+  background-color: #d6d6d6;
+}
 
-  .imagePreviewWrapper {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: block;
-    background-size: cover;
-    background-position: center center;
-  }
+.imagePreviewWrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: block;
+  background-size: cover;
+  background-position: center center;
+}
 
-  .validFeedback {
-    color: red;
-  }
+.validFeedback {
+  color: red;
+}
 </style>

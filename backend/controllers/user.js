@@ -1,14 +1,16 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const db = require('../models');
-const isEmailValid = require('../utils/emailValid');
-const { isPasswordValid, validationMessages } = require('../utils/passwordValid');
-const isUsernameValid = require('../utils/usernameValid');
-const { encrypt, decrypt } = require('../utils/emailCrypto');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const db = require("../models");
+const isEmailValid = require("../utils/emailValid");
+const {
+  isPasswordValid,
+  validationMessages,
+} = require("../utils/passwordValid");
+const isUsernameValid = require("../utils/usernameValid");
+const { encrypt, decrypt } = require("../utils/emailCrypto");
 
-require('dotenv').config();
-
+require("dotenv").config();
 
 // ********** Gestion de la création d'un nouvel utilisateur **********
 // *********************************************** ********************
@@ -200,7 +202,6 @@ exports.getUser = (req, res, next) => {
     });
 };
 
-
 // ********** Changer password **********
 // *********************************************** ********************
 
@@ -295,62 +296,60 @@ exports.updatePwdUser = (req, res, next) => {
 // ********** Suppression user **********
 // *********************************************** **
 exports.deleteUser = (req, res, next) => {
+  db.User.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((user) => {
+      // Vérifier l'existence de l'utilisateur
 
-    db.User.findOne({
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(user => {
-          // Vérifier l'existence de l'utilisateur
-
-          if (user === null) {
-            return res.status(404).json({
-              message: "Utilisateur non trouvé!",
-            });
-          }
-
-          // Vérifier l'existence de l'utilisateur
-
-          if (req.auth.userId !== user.id) {
-            return res.status(403).json({
-              message: "Demande non autorisée!",
-            });
-          }
-
-          const filename = user.avatar.split("/images/")[1];
-
-          if (filename !== "default-avatar.png") {
-            // Supprimer l'image du dossier images
-
-            fs.unlink(`images/${filename}`, (error) => {
-              if (error) throw error;
-              console.log("Photo de profil supprimée!");
-            });
-          }
-
-          db.User.destroy({
-            where: {
-              id: req.params.id,
-            },
-          })
-            .then(() =>
-              res.status(200).json({
-                message: `Compte supprimé!`,
-              })
-            )
-            .catch((error) =>
-              res.status(400).json({
-                message: error.message,
-              })
-            );
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
+      if (user === null) {
+        return res.status(404).json({
+          message: "Utilisateur non trouvé!",
         });
+      }
 
+      // Vérifier l'existence de l'utilisateur
+
+      if (req.auth.userId !== user.id) {
+        return res.status(403).json({
+          message: "Demande non autorisée!",
+        });
+      }
+
+      const filename = user.avatar.split("/images/")[1];
+
+      if (filename !== "default-avatar.png") {
+        // Supprimer l'image du dossier images
+
+        fs.unlink(`images/${filename}`, (error) => {
+          if (error) throw error;
+          console.log("Photo de profil supprimée!");
+        });
+      }
+
+      db.User.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then(() =>
+          res.status(200).json({
+            message: `Compte supprimé!`,
+          })
+        )
+        .catch((error) =>
+          res.status(400).json({
+            message: error.message,
+          })
+        );
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: error.message,
+      });
+    });
 };
 
 // **********Mise a jour profile **********

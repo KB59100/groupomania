@@ -4,7 +4,6 @@ const db = require("../models");
 // ********** Créer un POSTE **********
 // ****************************************
 exports.createPost = (req, res, next) => {
-
   let postObj;
 
   if (req.file) {

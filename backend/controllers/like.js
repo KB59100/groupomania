@@ -1,16 +1,15 @@
-const db = require('../models');
+const db = require("../models");
 
 // ********** Gestion des LIKE**********
 // **********************************************
 
 exports.like = (req, res, next) => {
-
-    db.Post.findOne({
-        where: {
-            id: req.params.id
-        }
-    })
-    .then(post => {
+  db.Post.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((post) => {
       // Vérifier l'existence du poste
 
       if (post === null) {
@@ -73,14 +72,10 @@ exports.like = (req, res, next) => {
           });
         });
     })
-    .catch(error => {
-        res.status(500).json({
-            message: error.message,
-            error
-        });
+    .catch((error) => {
+      res.status(500).json({
+        message: error.message,
+        error,
+      });
     });
-
 };
-
-
-
