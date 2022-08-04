@@ -1,6 +1,6 @@
 const db = require('../models');
 
-// ********** Management of the LIKE **********
+// ********** Gestion des LIKE**********
 // **********************************************
 
 exports.like = (req, res, next) => {
@@ -11,68 +11,67 @@ exports.like = (req, res, next) => {
         }
     })
     .then(post => {
+      // Vérifier l'existence du poste
 
-        // Check the existence of the post
-
-        if (post === null) {
-            return res.status(404).json({
-                message: 'post not found !'
-            });
-        }
-
-       // Check if the user likes the post or not
-
-        db.Like.findOne({
-            where: {
-                userId: req.auth.userId,
-                postId: post.id
-            }
-        })
-        .then(likeFound => {
-
-            if (likeFound === null) {
-
-                // Add a like
-
-                db.Like.create({
-                    UserId: req.auth.userId,
-                    PostId: post.id
-                })
-                .then(() => res.status(201).json({
-                    message: 'Like added !'
-                }))
-                .catch(error => {
-                    res.status(400).json({
-                        message: error.message
-                    })
-                });
-
-            } else {
-
-               // Delete a like
-    
-                db.Like.destroy({
-                    where: {
-                        userId: req.auth.userId,
-                        postId: post.id
-                    }
-                })
-                .then(() => res.status(200).json({
-                    message: `Like removed !`
-                }))
-                .catch(error => res.status(400).json({
-                    message: error.message
-                }));
-            }
-
-        })
-        .catch(error => {
-            res.status(404).json({
-                message: error.message,
-                error
-            })
+      if (post === null) {
+        return res.status(404).json({
+          message: "message introuvable!",
         });
-        
+      }
+
+      // Vérifiez si l'utilisateur aime le message ou non
+
+      db.Like.findOne({
+        where: {
+          userId: req.auth.userId,
+          postId: post.id,
+        },
+      })
+        .then((likeFound) => {
+          if (likeFound === null) {
+            // Add a like
+
+            db.Like.create({
+              UserId: req.auth.userId,
+              PostId: post.id,
+            })
+              .then(() =>
+                res.status(201).json({
+                  message: "Like ajouté!",
+                })
+              )
+              .catch((error) => {
+                res.status(400).json({
+                  message: error.message,
+                });
+              });
+          } else {
+            // Supprime le like
+
+            db.Like.destroy({
+              where: {
+                userId: req.auth.userId,
+                postId: post.id,
+              },
+            })
+              .then(() =>
+                res.status(200).json({
+                  message: `Like supprimé!`,
+                })
+              )
+              .catch((error) =>
+                res.status(400).json({
+                  message: error.message,
+                })
+              );
+          }
+        })
+        .catch((error) => {
+          res.status(404).json({
+            message: error.message,
+            error,
+          });
+        });
     })
     .catch(error => {
         res.status(500).json({

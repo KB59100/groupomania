@@ -1,21 +1,21 @@
 const fs = require("fs");
 const db = require("../models");
 
-// ********** Create a POST **********
+// ********** Créer un POSTE **********
 // ****************************************
 exports.createPost = (req, res, next) => {
-  // Check  of image in the request
+  // Vérification de l'image
 
   let postObj;
 
   if (req.file) {
     const content = JSON.parse(req.body.post).content.trim();
 
-    // Validation of message content when there is an image
+    // Validation du contenu du message lorsqu'il y a une image
 
     if (content !== "" && content.length < 2) {
       return res.status(400).json({
-        message: "The message must contain at least two characters",
+        message: "Le message doit contenir au moins deux caractères",
       });
     }
 
@@ -28,18 +28,18 @@ exports.createPost = (req, res, next) => {
   } else {
     const content = req.body.content.trim();
 
-    // Validation of message content when there is no image
+    // Validation du contenu du message lorsqu'il n'y a pas d'image
 
     if (content.length < 2) {
       return res.status(400).json({
-        message: "The message must contain at least two characters",
+        message: "Le message doit contenir au moins deux caractères",
       });
     }
 
     postObj = { content: content, imageUrl: null };
   }
 
-  // Save the post in the DB
+  // Enregistrer le message dans la BD
 
   db.Post.create({
     UserId: req.auth.userId,
@@ -48,7 +48,7 @@ exports.createPost = (req, res, next) => {
   })
     .then(() =>
       res.status(201).json({
-        message: "Post created successfully !",
+        message: "Message créé avec succès!",
       })
     )
     .catch((error) => {
@@ -58,7 +58,7 @@ exports.createPost = (req, res, next) => {
     });
 };
 
-// ********** Get all POSTS **********
+// ********** Récupère tous les messages**********
 // *********************************************** ****
 
 exports.getAllPosts = (req, res, next) => {
@@ -100,7 +100,9 @@ exports.getAllPosts = (req, res, next) => {
       if (posts) {
         res.status(200).json(posts);
       } else {
-        res.status(400).json({ message: "Error geting posts" });
+        res
+          .status(400)
+          .json({ message: "Erreur lors de la réception des messages" });
       }
     })
     .catch((error) => {
@@ -110,7 +112,7 @@ exports.getAllPosts = (req, res, next) => {
     });
 };
 
-// ********** Get one  POST **********
+// ********** Récupère UN POST **********
 // *********************************************
 
 exports.getOnePost = (req, res, next) => {
@@ -151,11 +153,11 @@ exports.getOnePost = (req, res, next) => {
     ],
   })
     .then((post) => {
-      // Check the existence of the post
+      // Vérifier l'existence du poste
 
       if (post === null) {
         return res.status(404).json({
-          message: "post not found !",
+          message: "message introuvable!",
         });
       }
       res.status(200).json(post);
@@ -167,7 +169,7 @@ exports.getOnePost = (req, res, next) => {
     });
 };
 
-// ********** Get Users POSTS **********
+// ********** Récupère des POSTS d'utilisateurs **********
 // *********************************************** *************
 
 exports.getMyPosts = (req, res, next) => {
@@ -212,7 +214,9 @@ exports.getMyPosts = (req, res, next) => {
       if (posts) {
         res.status(200).json(posts);
       } else {
-        res.status(400).json({ message: "Error retrieving posts" });
+        res
+          .status(400)
+          .json({ message: "Erreur lors de la récupération des messages" });
       }
     })
     .catch((error) => {
@@ -222,7 +226,7 @@ exports.getMyPosts = (req, res, next) => {
     });
 };
 
-// ********** Deleting a POST ***********
+// ********** Spprime POST ***********
 // *********************************************
 
 exports.deletePost = (req, res, next) => {
@@ -232,15 +236,15 @@ exports.deletePost = (req, res, next) => {
     },
   })
     .then((post) => {
-      // Check the existence of the post
+      // Vérifier l'existence du poste
 
       if (post === null) {
         return res.status(400).json({
-          message: "post not found !",
+          message: "message introuvable!",
         });
       }
 
-      // Check if user = post creator or admin
+      // Vérifiez si l'utilisateur = le créateur de la publication ou l'administrateur
 
       db.User.findOne({
         where: {
@@ -280,7 +284,7 @@ exports.deletePost = (req, res, next) => {
               );
           } else {
             return res.status(403).json({
-              message: "Unauthorized request!",
+              message: "Demande non autorisée!",
             });
           }
         })
@@ -298,11 +302,11 @@ exports.deletePost = (req, res, next) => {
     });
 };
 
-// ********** Modification of a POST ***********
+// ********** Modification  POST ***********
 // **********************************************
 
 exports.updatePost = (req, res, next) => {
-  // Validation of message content
+  // Validation du contenu des messages
 
   const content =
     req.file === undefined
@@ -310,15 +314,15 @@ exports.updatePost = (req, res, next) => {
       : JSON.parse(req.body.post).content.trim();
 
   // 2 scenarios
-  // case 1: image in the post AND message length = 1 character (0 is allowed)
-  // case 2: no image in the post AND message length less than 2 characters
+  // case 1: image dans le message ET longueur du message = 1 caractère (0 est autorisé)
+  // case 2: pas d'image dans le message ET longueur du message inférieure à 2 caractères
 
   if (
     ((req.file || req.body.keepPreviousImg) && content.length === 1) ||
     (!req.file && !req.body.keepPreviousImg && content.length < 2)
   ) {
     return res.status(400).json({
-      message: "The message must contain at least two characters",
+      message: "Le message doit contenir au moins deux caractères",
     });
   }
 
@@ -328,25 +332,25 @@ exports.updatePost = (req, res, next) => {
     },
   })
     .then((post) => {
-      // Check the existence of the post
+      // Vérifier l'existence du poste
 
       if (post === null) {
         return res.status(400).json({
-          message: "post not found !",
+          message: "message introuvable!",
         });
       }
 
-      // Check if user = post creator
+      // Vérifier si utilisateur = créateur de publication
 
       if (req.auth.userId !== post.userId) {
         return res.status(403).json({
-          message: "Unauthorized request !",
+          message: "Demande non autorisée!",
         });
       }
 
-      // Delete the old image from the images folder if it exists
+      // Supprimer l'ancienne image du dossier images s'il existe
 
-      // Condition = there was already an image AND (we have a new image uploaded or we want to delete the image)
+      //Condition = il y avait déjà une image ET (nous avons une nouvelle image téléchargée ou nous voulons supprimer l'image)
 
       const deleteImg = req.body.deleteImg;
 
@@ -355,16 +359,16 @@ exports.updatePost = (req, res, next) => {
 
         fs.unlink(`images/${filename}`, (error) => {
           if (error) throw error;
-          console.log("Old post image deleted !");
+          console.log("Image de l'ancien message supprimée!");
         });
       }
 
-      // Check presence of image in the request
+      // Vérifier la présence de l'image dans la requête
 
       let postObj;
 
       if (req.file) {
-        // Process the object with new image
+        //Traiter l'objet avec une nouvelle image
 
         const content = JSON.parse(req.body.post).content.trim();
 
@@ -375,7 +379,7 @@ exports.updatePost = (req, res, next) => {
           }`,
         };
       } else {
-        // Process the object without uploaded image
+        // Traiter l'objet sans image téléchargée
 
         const content = req.body.content.trim();
 
@@ -387,7 +391,7 @@ exports.updatePost = (req, res, next) => {
         };
       }
 
-      // Update of the post in the db
+      // Mise à jour du post dans la bd
 
       db.Post.update(
         {
@@ -401,7 +405,7 @@ exports.updatePost = (req, res, next) => {
       )
         .then(() =>
           res.status(200).json({
-            message: "Post updated !",
+            message: "Post mis à jour !",
             updatedData: postObj,
           })
         )

@@ -1,4 +1,4 @@
-// Create the username validation function
+// Créer la fonction de validation du nom d'utilisateur
 
 const usernameValid = username => {
     

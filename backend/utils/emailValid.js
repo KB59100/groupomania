@@ -1,6 +1,6 @@
 const validator = require('validator');
 
-// Creation of the email validation function
+// Création de la fonction de validation des emails
 
 const isEmailValid = email => validator.isEmail(email);
 

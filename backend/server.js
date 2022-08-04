@@ -39,7 +39,7 @@ const errorHandler = (error) => {
   }
 };
 
-// Create the server
+// Creation du server
 
 const server = http.createServer(app);
 

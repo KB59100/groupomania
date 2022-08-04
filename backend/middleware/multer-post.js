@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-// Create a MIME_TYPES dictionary with accepted file types
+//  Créer un dictionnaire MIME_TYPES avec les types de fichiers acceptés
 
 const MIME_TYPES = {
   'image/jpg': 'jpg',
@@ -10,7 +10,7 @@ const MIME_TYPES = {
   'image/gif': 'gif'
 };
 
-// File storage management with Multer
+// Gestion du stockage de fichiers avec Multer
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -23,14 +23,14 @@ const storage = multer.diskStorage({
   }
 });
 
-// Validate files
+// Valider fichiers
 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/gif'];
   if(!allowedTypes.includes(file.mimetype)) {
     const error = new Error();
     error.code = "LIMIT_FILE_TYPES";
-    error.message = "Wrong file type !";
+    error.message = "Mauvais type de fichier!";
     return cb(error, false);
   }
   cb(null, true);
@@ -49,7 +49,7 @@ const upload = multer({
 module.exports = (req, res, next) => {
   upload(req, res, (err) => {
     if(err && err.code === "LIMIT_FILE_SIZE") {
-      err.message = "file too large, max size = 1 MB";
+      err.message = "fichier trop volumineux, taille max = 1 Mo";
     }
     return err ? res.status(400).json(err) : next()
   });

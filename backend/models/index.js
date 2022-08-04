@@ -30,6 +30,7 @@ const sequelize = new Sequelize({
   host: process.env.DB_HOST,
   dialect: "mysql",
 });
+
 //sequelize.sync({ force: true });
 
 fs.readdirSync(__dirname)

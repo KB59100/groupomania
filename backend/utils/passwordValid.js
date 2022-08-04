@@ -2,7 +2,7 @@
 
 const passwordValidator = require('password-validator');
 
-// Create the password scheme
+// Créer le schéma de mot de passe
 
 const schemaPassword = new passwordValidator();
 
@@ -13,15 +13,15 @@ schemaPassword
     .is().max(100)                       
     .has().lowercase()                   
     .has().uppercase(1)                  
-    .has().digits(2)                     //Atlest 2 number have to use
-    .has().symbols(1)                    //Have to use atleast one special symbol
-    .has().not().spaces()                // Should not have spaces
+    .has().digits(2)                     //Au moins 2 numéros doivent utiliser
+    .has().symbols(1)                    //symbole
+    .has().not().spaces()                // pas d'espace
 
-// Create the password validity function
+// Créer la fonction de validité du mot de passe
 
 const isPasswordValid = password => (schemaPassword.validate(password));
 
-// Creation of the function returning the validation messages
+// Création de la fonction retournant les messages de validation
 
 const validationMessages = password => {
     

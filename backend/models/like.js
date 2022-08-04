@@ -5,17 +5,17 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Like extends Model {
     /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
+     * Méthode d'assistance pour définir des associations.
+     * Cette méthode ne fait pas partie du cycle de vie de Sequelize.
+     * Le fichier `models/index` appellera cette méthode automatiquement.
      */
     static associate(models) {
-      // define association here
+      // définir l'association ici
       models.Like.belongsTo(models.User, {
         foreignKey: {
           allowNull: false,
           foreignKey: "userId",
-          targetKey: "id"
+          targetKey: "id",
         },
         // onDelete: 'CASCADE'
       });
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           allowNull: false,
           foreignKey: "postId",
-          targetKey: "id"
+          targetKey: "id",
         },
         // onDelete: 'CASCADE'
       });

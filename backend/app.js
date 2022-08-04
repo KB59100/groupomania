@@ -12,15 +12,14 @@ let password = process.env.DB_PASSWORD;
 let database = process.env.DB_DATABASE;
 let host =  process.env.DB_HOST;
 
-// Creation of the Express application
+// Creation express
 
 const app = express();
 
-// Express middleware that parses incoming JSON requests and puts parsed data into req.body
-
+// Middleware express qui analyse les requêtes JSON entrantes et place les données analysées dans req.body
 app.use(express.json());
 
-// Middleware - add access control headers for all response objects
+// Middleware - ajouter des en-têtes de contrôle d'accès pour tous les objets de réponse
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -29,7 +28,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Manage the "images" resource statically
+// Gérer la ressource "images" de manière statique
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
